@@ -11,6 +11,27 @@ Audiora turns a prompt, a book title, or a remembered dream into a cinematic aud
 
 The frontend proxies `/api` to the backend at `http://localhost:8787`. Set `VITE_API_URL` if it is hosted separately.
 
+## Live Python audio services
+
+The complete OpenAI story preprocessor, ElevenLabs renderer, sound catalogue, and local sound library live in [`services/story-audio/`](./services/story-audio/). Generated dialogue clips and final WAV files are intentionally ignored by Git.
+
+Install the Python service dependencies and ensure `ffmpeg`/`ffprobe` are available on your `PATH`:
+
+```bash
+python3 -m venv .venv-audio
+.venv-audio/bin/pip install -r services/story-audio/requirements.txt
+```
+
+For live mode, set `OPENAI_API_KEY`, `ELEVENLABS_API_KEY`, `STORY_ENGINE_MODE=live`, and `AUDIO_ENGINE_MODE=live` in `.env`. In separate terminals, start the services and app:
+
+```bash
+.venv-audio/bin/uvicorn main:app --app-dir services/story-audio --port 8000
+.venv-audio/bin/uvicorn audio_api:app --app-dir services/story-audio --port 8001
+pnpm dev
+```
+
+The Node backend forwards each key only to its matching local service. The browser receives only the final backend-served audio URL, never API keys or the renderer's intermediate files.
+
 ## Engine boundary
 
 The public contracts live in [`contracts/story-engine.schema.json`](./contracts/story-engine.schema.json) and [`contracts/audio-engine.schema.json`](./contracts/audio-engine.schema.json). The backend validates payloads on both sides of each adapter.

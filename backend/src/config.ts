@@ -19,7 +19,7 @@ const envSchema = z.object({
   STORY_ENGINE_URL: optionalUrl,
   AUDIO_ENGINE_MODE: z.enum(['mock', 'live']).default('mock'),
   AUDIO_ENGINE_URL: optionalUrl,
-  GENERATED_AUDIO_DIR: z.string().default('../hackathon_preprocessor/hackathon/rendered'),
+  GENERATED_AUDIO_DIR: z.string().default('services/story-audio/rendered'),
   MOCK_MIN_DELAY_MS: z.coerce.number().min(0).default(1500),
   MOCK_MAX_DELAY_MS: z.coerce.number().min(0).default(4000),
   MOCK_ERROR_RATE: z.coerce.number().min(0).max(1).default(0.03)
