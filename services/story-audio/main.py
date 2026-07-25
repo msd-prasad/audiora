@@ -13,20 +13,29 @@ from __future__ import annotations
 
 import json
 import os
+from datetime import datetime, timezone
+from pathlib import Path
 from typing import Annotated, Literal
 from uuid import uuid4
 
-from fastapi import FastAPI, Header, HTTPException
+from fastapi import FastAPI, File, Header, HTTPException, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
 from openai import APIError, OpenAI
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 from dotenv import load_dotenv
+from pypdf import PdfReader
 
 from sound_catalog import catalog_prompt, valid_sound_pairs
+from audio_api import OUTPUTS, SOUNDS, render_story
 
 
-# Loads a local, git-ignored .env for development. Production should provide
-# OPENAI_API_KEY through its secret manager/environment instead.
-load_dotenv()
+# Loads the one app-level, git-ignored key file. Production should provide
+# these values through its secret manager/environment instead.
+HERE = Path(__file__).resolve().parent
+APP_ROOT = HERE.parents[1]
+load_dotenv(APP_ROOT / ".env", override=True)
 
 
 class StrictModel(BaseModel):
@@ -174,7 +183,16 @@ class ImmersiveStory(StrictModel):
     scenes: list[Scene]
 
 
-app = FastAPI(title="Immersive Story Generator", version="1.0.0")
+app = FastAPI(title="Audiora API", version="1.0.0")
+origins = [item.strip() for item in os.getenv("FRONTEND_ORIGIN", "http://localhost:5173,http://127.0.0.1:5173").split(",")]
+app.add_middleware(CORSMiddleware, allow_origins=origins, allow_credentials=False, allow_methods=["*"], allow_headers=["*"])
+app.mount("/api/generated-audio", StaticFiles(directory=OUTPUTS), name="generated-audio")
+COVERS = APP_ROOT / "backend" / "mocks" / "assets" / "covers"
+if COVERS.is_dir():
+    app.mount("/api/assets/covers", StaticFiles(directory=COVERS), name="covers")
+FRONTEND_DIST = APP_ROOT / "frontend" / "dist"
+if FRONTEND_DIST.is_dir():
+    app.mount("/assets", StaticFiles(directory=FRONTEND_DIST / "assets"), name="frontend-assets")
 
 
 def strict_schema(model: type[BaseModel]) -> dict:
@@ -221,30 +239,40 @@ def structured_response(client: OpenAI, model: str, instructions: str, payload: 
 
 
 def validate_sound_references(story: ImmersiveStory) -> None:
-    """Reject any cue that does not map to a real term/path in the processed manifest."""
+    """Keep only cues whose catalog entry and local audio file are available.
+
+    Story generation should still succeed when an optional ambience or SFX asset
+    is unavailable; the dialogue timeline remains the source of truth.
+    """
     allowed = valid_sound_pairs()
     if not allowed:
-        raise HTTPException(status_code=500, detail="No processed sound catalogue was found.")
-    selected = []
+        print("warning: no processed sound catalogue found; rendering dialogue without sound cues")
+        for scene in story.scenes:
+            scene.audio_cues = []
+        return
     for scene in story.scenes:
         dialogue_order = {line.id: index for index, line in enumerate(scene.dialogue)}
+        usable_cues = []
         for cue in scene.audio_cues:
             if cue.start_dialogue_id not in dialogue_order or cue.end_dialogue_id not in dialogue_order:
-                raise HTTPException(
-                    status_code=502,
-                    detail=f"Audio cue {cue.id} references a dialogue outside scene {scene.scene_id}.",
-                )
+                print(f"warning: cue {cue.id} skipped; dialogue range is outside scene {scene.scene_id}")
+                continue
             starts_after_end = dialogue_order[cue.start_dialogue_id] > dialogue_order[cue.end_dialogue_id]
             invalid_same_line_range = (
                 cue.start_dialogue_id == cue.end_dialogue_id
                 and cue.position_start > cue.position_end
             )
             if starts_after_end or invalid_same_line_range:
-                raise HTTPException(status_code=502, detail=f"Audio cue {cue.id} has an invalid timeline range.")
-            selected.append((cue.sound, cue.file))
-    unknown = [pair for pair in selected if pair not in allowed]
-    if unknown:
-        raise HTTPException(status_code=502, detail=f"Model selected sound not in catalogue: {unknown[0]}")
+                print(f"warning: cue {cue.id} skipped; invalid timeline range")
+                continue
+            if (cue.sound, cue.file) not in allowed:
+                print(f"warning: cue {cue.id} skipped; not in sound catalogue: {cue.file}")
+                continue
+            if not (SOUNDS / cue.file).is_file():
+                print(f"warning: cue {cue.id} skipped; sound file is unavailable: {cue.file}")
+                continue
+            usable_cues.append(cue)
+        scene.audio_cues = usable_cues
 
 
 @app.get("/health")
@@ -348,3 +376,166 @@ def generate_story(
     story.story_overview = blueprint
     validate_sound_references(story)
     return story
+
+
+# The endpoints below replace the former Express orchestration layer. The React
+# app calls this FastAPI service directly; API keys remain only in the local
+# server environment and are never accepted from the browser.
+class CharacterInput(StrictModel):
+    name: Annotated[str, Field(min_length=1, max_length=80)]
+    gender: Literal["woman", "man", "non-binary", "unspecified"]
+    personality: Annotated[str, Field(min_length=1, max_length=240)]
+
+
+class BriefRequest(StrictModel):
+    mode: Literal["raw_story", "existing_book", "dreamcast"]
+    text: str | None = None
+    audioTranscript: str | None = None
+    pdfText: str | None = None
+    title: str | None = None
+    author: str | None = None
+
+
+class BriefResponse(StrictModel):
+    briefStory: str
+    suggestedTitle: str
+    suggestedGenre: str
+    characters: list[CharacterInput]
+
+
+class BuildScriptRequest(StrictModel):
+    briefStory: Annotated[str, Field(min_length=20, max_length=30_000)]
+    title: Annotated[str, Field(min_length=1, max_length=160)]
+    genre: Annotated[str, Field(min_length=1, max_length=80)]
+    characters: list[CharacterInput] = []
+
+
+LIBRARY_PATH = HERE / "storage" / "library.json"
+
+
+def brief_source(request: BriefRequest) -> str:
+    if request.mode == "existing_book":
+        return f"{request.title or ''}{f' by {request.author}' if request.author else ''}".strip()
+    return "\n\n".join(value.strip() for value in (request.text, request.audioTranscript, request.pdfText) if value and value.strip())
+
+
+def read_library() -> list[dict]:
+    try:
+        return json.loads(LIBRARY_PATH.read_text(encoding="utf-8"))
+    except (FileNotFoundError, json.JSONDecodeError):
+        return []
+
+
+def write_library(entries: list[dict]) -> None:
+    LIBRARY_PATH.parent.mkdir(parents=True, exist_ok=True)
+    LIBRARY_PATH.write_text(json.dumps(entries, indent=2), encoding="utf-8")
+
+
+@app.exception_handler(HTTPException)
+async def http_error(_request, exc: HTTPException):
+    return JSONResponse(status_code=exc.status_code, content={"error": str(exc.detail)})
+
+
+@app.get("/api/health")
+def api_health() -> dict[str, object]:
+    return {"ok": True, "storyEngine": "live", "audioEngine": "live"}
+
+
+@app.post("/api/story/extract-pdf")
+async def extract_pdf(file: UploadFile = File(...)) -> dict[str, str]:
+    if file.content_type != "application/pdf" and not (file.filename or "").lower().endswith(".pdf"):
+        raise HTTPException(status_code=415, detail="Only PDF files are supported.")
+    data = await file.read()
+    if len(data) > 3 * 1024 * 1024:
+        raise HTTPException(status_code=413, detail="PDF files must be 3 MB or smaller.")
+    try:
+        reader = PdfReader(__import__("io").BytesIO(data))
+        text = " ".join(page.extract_text() or "" for page in reader.pages)
+    except Exception as exc:
+        raise HTTPException(status_code=422, detail="We could not read text from that PDF. Try a text-based PDF or paste the story instead.") from exc
+    text = " ".join(text.split())
+    if not text:
+        raise HTTPException(status_code=422, detail="We could not read text from that PDF. Try a text-based PDF or paste the story instead.")
+    return {"pdfText": text}
+
+
+@app.post("/api/story/generate-brief", response_model=BriefResponse)
+def generate_brief(request: BriefRequest) -> BriefResponse:
+    source = brief_source(request)
+    if not source:
+        raise HTTPException(status_code=400, detail="Add a typed story, voice transcript, PDF text, or book title.")
+    api_key = os.getenv("OPENAI_API_KEY")
+    if not api_key:
+        raise HTTPException(status_code=401, detail="OPENAI_API_KEY is required for live story generation.")
+    instruction = "Turn the supplied source into 350–550 words of original, narratable prose with a clear beginning, turn, and emotionally satisfying ending."
+    if request.mode == "existing_book":
+        instruction = "Create an original, spoiler-conscious, high-level adaptation brief from the title only; do not quote or reproduce copyrighted material."
+    elif request.mode == "dreamcast":
+        instruction = "Turn this dream into a surreal, emotionally coherent narratable story while preserving its uncanny imagery."
+    payload = json.dumps({"mode": request.mode, "source": source, "instruction": instruction}, ensure_ascii=False)
+    try:
+        return structured_response(
+            OpenAI(api_key=api_key), os.getenv("OPENAI_MODEL", "gpt-4.1"),
+            "You are Audiora's story editor. Return only the requested JSON. briefStory must be original prose, "
+            "suggestedTitle and suggestedGenre must be concise, and characters must have a name, gender, and personality.",
+            payload, BriefResponse,
+        )
+    except (APIError, ValueError) as exc:
+        raise HTTPException(status_code=502, detail="The story editor could not generate a valid brief. Please retry.") from exc
+
+
+@app.post("/api/story/build-script", response_model=ImmersiveStory)
+def build_script(request: BuildScriptRequest) -> ImmersiveStory:
+    character_guide = "\n".join(f"- {item.name} | {item.gender} | {item.personality}" for item in request.characters)
+    source = f"TITLE: {request.title}\nGENRE: {request.genre}\n"
+    if character_guide:
+        source += f"CHARACTER GUIDE:\n{character_guide}\n"
+    source += f"\nSTORY:\n{request.briefStory}"
+    return generate_story(GenerateStoryRequest(story=source))
+
+
+@app.post("/api/story/render-audio")
+def render_audio(story: dict) -> dict:
+    result = render_story(story)
+    if result["audio_url"].startswith("/files/"):
+        result["audio_url"] = "/api/generated-audio/" + result["audio_url"].removeprefix("/files/")
+    cover = "/api/assets/covers/velvet-cosmos.svg"
+    entries = read_library()
+    entries.append({
+        "id": str(uuid4()), "title": story.get("title", "Untitled story"), "genre": story.get("genre", "Story"),
+        "coverImageUrl": cover, "createdAt": datetime.now(timezone.utc).isoformat(),
+        "rendered": {"audio": result, "coverImageUrl": cover, "script": story},
+    })
+    write_library(entries)
+    return result
+
+
+@app.get("/api/library")
+def list_library() -> list[dict]:
+    return sorted(read_library(), key=lambda entry: entry.get("createdAt", ""), reverse=True)
+
+
+@app.get("/api/library/{entry_id}")
+def get_library(entry_id: str) -> dict:
+    for entry in read_library():
+        if entry.get("id") == entry_id:
+            return entry
+    raise HTTPException(status_code=404, detail="Story not found.")
+
+
+@app.get("/", include_in_schema=False)
+@app.get("/{client_path:path}", include_in_schema=False)
+def serve_frontend(client_path: str = ""):
+    """Serve the built React SPA, including client-side routes such as /player."""
+    if client_path.startswith("api/"):
+        raise HTTPException(status_code=404, detail="Route not found.")
+    index = FRONTEND_DIST / "index.html"
+    if not index.is_file():
+        raise HTTPException(status_code=503, detail="Frontend build is missing. Run pnpm --filter @audiora/frontend build.")
+    return FileResponse(index)
+
+
+if __name__ == "__main__":
+    import uvicorn
+
+    uvicorn.run(app, host=os.getenv("AUDIORA_HOST", "127.0.0.1"), port=int(os.getenv("AUDIORA_PORT", "8000")))

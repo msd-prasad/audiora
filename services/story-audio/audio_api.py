@@ -15,8 +15,10 @@ from uuid import uuid4
 
 from fastapi import FastAPI, Header, HTTPException
 from fastapi.staticfiles import StaticFiles
+from dotenv import load_dotenv
 
 HERE = Path(__file__).resolve().parent
+load_dotenv(HERE.parents[1] / ".env", override=True)
 RENDERER = Path(os.getenv("AUDIO_RENDERER_PATH", HERE / "render_story_timeline_elevenlabs.py"))
 SOUNDS = Path(os.getenv("SOUND_LIBRARY_ROOT", HERE / "sounds"))
 OUTPUTS = Path(os.getenv("AUDIO_OUTPUT_ROOT", HERE / "rendered"))
@@ -34,8 +36,14 @@ def health() -> dict[str, str]:
 
 @app.post("/render-audio")
 def render_audio(story: dict, x_elevenlabs_api_key: str | None = Header(default=None)) -> dict:
-    if not x_elevenlabs_api_key:
-        raise HTTPException(status_code=401, detail="Missing X-ElevenLabs-API-Key header.")
+    return render_story(story, x_elevenlabs_api_key or os.getenv("ELEVENLABS_API_KEY"))
+
+
+def render_story(story: dict, api_key: str | None = None) -> dict:
+    """Render one story for the unified FastAPI API or the standalone worker."""
+    api_key = os.getenv("ELEVENLABS_API_KEY") or api_key 
+    if not api_key:
+        raise HTTPException(status_code=401, detail="ELEVENLABS_API_KEY is required.")
     if not RENDERER.is_file():
         raise HTTPException(status_code=500, detail=f"Renderer not found: {RENDERER}")
     if not SOUNDS.is_dir():
@@ -46,7 +54,7 @@ def render_audio(story: dict, x_elevenlabs_api_key: str | None = Header(default=
     story_file = job_dir / "story.json"
     story_file.write_text(json.dumps(story), encoding="utf-8")
     environment = os.environ.copy()
-    environment["ELEVENLABS_API_KEY"] = x_elevenlabs_api_key
+    environment["ELEVENLABS_API_KEY"] = api_key
     command = [sys.executable, str(RENDERER), str(story_file), "--sounds", str(SOUNDS), "--output", str(job_dir)]
     if VOICE_MAP:
         command.extend(["--voice-map", VOICE_MAP])

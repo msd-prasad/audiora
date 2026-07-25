@@ -1,4 +1,6 @@
-const base = import.meta.env.VITE_API_URL ?? '';
+// The production build is served by FastAPI, so relative URLs stay on the
+// backend origin. VITE_API_URL is only needed for an intentionally separate UI.
+const base = (import.meta.env.VITE_API_URL ?? '').replace(/\/$/, '');
 export const assetUrl = (url: string) => url.startsWith('http') ? url : `${base}${url}`;
 export async function api<T>(path: string, options?: RequestInit): Promise<T> {
   const response = await fetch(`${base}${path}`, { headers: { 'content-type': 'application/json', ...(options?.headers ?? {}) }, ...options });
