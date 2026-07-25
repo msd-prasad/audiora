@@ -13,15 +13,22 @@ const waitWithMockBehavior = async () => {
 
 const hash = (input: string) => [...input].reduce((value, char) => ((value << 5) - value + char.charCodeAt(0)) | 0, 0) >>> 0;
 const sentences = (input: string) => input.replace(/\s+/g, ' ').match(/[^.!?]+[.!?]+|[^.!?]+$/g)?.map((sentence) => sentence.trim()).filter(Boolean) ?? [];
+const unpackCharacterGuide = (input: string) => {
+  const [header, story] = input.split(/\n\nSTORY\n/i);
+  const names = [...header.matchAll(/^-\s*([^|\n]+)\s*\|/gm)].map((match) => match[1].trim()).filter(Boolean);
+  return { story: story?.trim() || input, names };
+};
 
 export class MockStoryEngineClient implements StoryEngineClient {
   async buildScript(request: StoryEngineRequest): Promise<StoryScript> {
     validateStoryRequest(request);
     await waitWithMockBehavior();
     const seed = hash(`${request.title}|${request.genre}|${request.briefStory}`);
-    const source = sentences(request.briefStory);
+    const guidedBrief = unpackCharacterGuide(request.briefStory);
+    const source = sentences(guidedBrief.story);
     const sceneTotal = 3 + (seed % 2);
-    const names = request.genre.toLowerCase().includes('dream') || request.genre.toLowerCase().includes('fantasy') ? ['Luna', 'Orion', 'The Whisper'] : ['Maya', 'Elias', 'Narrator'];
+    const defaultNames = request.genre.toLowerCase().includes('dream') || request.genre.toLowerCase().includes('fantasy') ? ['Luna', 'Orion', 'The Whisper'] : ['Maya', 'Elias', 'Narrator'];
+    const names = guidedBrief.names.length ? guidedBrief.names : defaultNames;
     const moods = ['curious', 'determined', 'vulnerable', 'triumphant'];
     const music = request.genre.toLowerCase().includes('horror') || request.genre.toLowerCase().includes('thriller') ? 'midnight_pulse' : request.genre.toLowerCase().includes('dream') ? 'glass_horizon' : 'cinematic_current';
     const scenes: StoryScript['scenes'] = Array.from({ length: sceneTotal }, (_, index) => {

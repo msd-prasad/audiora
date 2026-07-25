@@ -20,4 +20,12 @@ describe('mock engine adapters', () => {
     expect(audio.scene_markers.at(0)?.start_seconds).toBe(0);
     expect(audio.scene_markers.at(-1)?.end_seconds).toBe(audio.duration_seconds);
   });
+  it('uses character names supplied through the Phase 2 brief-story header', async () => {
+    const script = await new MockStoryEngineClient().buildScript({
+      ...request,
+      briefStory: 'CHARACTER GUIDE\n- Elena | woman | Warm and decisive.\n- Samir | man | Careful and observant.\n\nSTORY\nElena and Samir follow a strange radio signal through the rain-soaked city.'
+    });
+    expect(['Elena', 'Samir']).toContain(script.scenes[0].dialogue[1].character.name);
+    expect(script.scenes[0].dialogue[0].sentence).toContain('Elena and Samir');
+  });
 });

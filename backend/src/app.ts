@@ -17,7 +17,17 @@ import type { StoryScript } from './contracts/types.js';
 
 const assetsRoot = resolve(dirname(fileURLToPath(import.meta.url)), '../mocks/assets');
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 10 * 1024 * 1024 } });
-const buildSchema = z.object({ briefStory: z.string().min(1).max(20000), title: z.string().min(1).max(160), genre: z.string().min(1).max(80) });
+const characterInputSchema = z.object({
+  name: z.string().min(1).max(80),
+  gender: z.enum(['woman', 'man', 'non-binary', 'unspecified']),
+  personality: z.string().min(1).max(240)
+});
+const buildSchema = z.object({ briefStory: z.string().min(1).max(20000), title: z.string().min(1).max(160), genre: z.string().min(1).max(80), characters: z.array(characterInputSchema).max(6).optional() });
+const toStoryEngineBrief = (briefStory: string, characters: Array<z.infer<typeof characterInputSchema>> = []) => {
+  if (!characters.length) return briefStory;
+  const header = characters.map((character) => `- ${character.name.trim()} | ${character.gender} | ${character.personality.replace(/\s+/g, ' ').trim()}`).join('\n');
+  return `CHARACTER GUIDE\n${header}\n\nSTORY\n${briefStory}`;
+};
 
 export function createApp() {
   const app = express();
@@ -43,7 +53,10 @@ export function createApp() {
     catch (error) { next(error); }
   });
   app.post('/api/story/build-script', async (req, res, next) => {
-    try { res.json(await storyEngine.buildScript(buildSchema.parse(req.body))); }
+    try {
+      const { briefStory, title, genre, characters } = buildSchema.parse(req.body);
+      res.json(await storyEngine.buildScript({ briefStory: toStoryEngineBrief(briefStory, characters), title, genre }));
+    }
     catch (error) { next(error); }
   });
   app.post('/api/story/render-audio', async (req, res, next) => {

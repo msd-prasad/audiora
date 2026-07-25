@@ -5,10 +5,17 @@ export type BriefRequest =
   | { mode: 'existing_book'; title: string; author?: string | null }
   | { mode: 'dreamcast'; text?: string | null; audioTranscript?: string | null };
 
+export interface CharacterProfile {
+  name: string;
+  gender: 'woman' | 'man' | 'non-binary' | 'unspecified';
+  personality: string;
+}
+
 export interface BriefStory {
   briefStory: string;
   suggestedTitle: string;
   suggestedGenre: string;
+  characters: CharacterProfile[];
 }
 
 export interface StoryEngineRequest { briefStory: string; title: string; genre: string; }
