@@ -1,0 +1,972 @@
+[
+  {
+    "term": "heavy rain",
+    "file": "nature/001_heavy-rain.mp3",
+    "source_id": 380153,
+    "source_name": "Heavy rain.wav",
+    "source_url": "https://freesound.org/people/BonnyOrbit/sounds/380153/",
+    "creator": "BonnyOrbit",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 27.489
+  },
+  {
+    "term": "light rain",
+    "file": "nature/002_light-rain.mp3",
+    "source_id": 380651,
+    "source_name": "Light rain on street.wav",
+    "source_url": "https://freesound.org/people/BonnyOrbit/sounds/380651/",
+    "creator": "BonnyOrbit",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 105.0
+  },
+  {
+    "term": "forest ambience",
+    "file": "nature/004_forest-ambience.mp3",
+    "source_id": 447812,
+    "source_name": "walking ambience forest autumn crunchy step walking leafes-002.wav",
+    "source_url": "https://freesound.org/people/EricsSoundschmiede/sounds/447812/",
+    "creator": "EricsSoundschmiede",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 112.277
+  },
+  {
+    "term": "birds singing",
+    "file": "nature/005_birds-singing.mp3",
+    "source_id": 509937,
+    "source_name": "birds singing in the evening forest",
+    "source_url": "https://freesound.org/people/titi2/sounds/509937/",
+    "creator": "titi2",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 78.1718
+  },
+  {
+    "term": "owl hoot",
+    "file": "nature/006_owl-hoot.mp3",
+    "source_id": 528623,
+    "source_name": "Owl Slow Hoot",
+    "source_url": "https://freesound.org/people/dandman3039/sounds/528623/",
+    "creator": "dandman3039",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 33.7067
+  },
+  {
+    "term": "crickets night",
+    "file": "nature/007_crickets-night.mp3",
+    "source_id": 535765,
+    "source_name": "Windy Neighborhood and Traffic at Night with Crickets and a Car Booming Bass",
+    "source_url": "https://freesound.org/people/PostProdDog/sounds/535765/",
+    "creator": "PostProdDog",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 35.461
+  },
+  {
+    "term": "wind gust",
+    "file": "nature/008_wind-gust.mp3",
+    "source_id": 726318,
+    "source_name": "wind 7",
+    "source_url": "https://freesound.org/people/ZIP.Creates/sounds/726318/",
+    "creator": "ZIP.Creates",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 16.3
+  },
+  {
+    "term": "ocean waves",
+    "file": "nature/009_ocean-waves.mp3",
+    "source_id": 827529,
+    "source_name": "Ocean_coast_03_092025_0659AM",
+    "source_url": "https://freesound.org/people/YevgVerh/sounds/827529/",
+    "creator": "YevgVerh",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 113.792
+  },
+  {
+    "term": "river stream",
+    "file": "nature/010_river-stream.mp3",
+    "source_id": 637789,
+    "source_name": "river or stream close soft babbly current2.flac",
+    "source_url": "https://freesound.org/people/kyles/sounds/637789/",
+    "creator": "kyles",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 73.4736
+  },
+  {
+    "term": "water drip cave",
+    "file": "nature/011_water-drip-cave.mp3",
+    "source_id": 628404,
+    "source_name": "Water dripping after the rain",
+    "source_url": "https://freesound.org/people/xkeril/sounds/628404/",
+    "creator": "xkeril",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 148.428
+  },
+  {
+    "term": "thunder clap",
+    "file": "nature/012_thunder-clap.mp3",
+    "source_id": 17054,
+    "source_name": "cool_thunder_clap.wav",
+    "source_url": "https://freesound.org/people/SpeedY/sounds/17054/",
+    "creator": "SpeedY",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 35.1599
+  },
+  {
+    "term": "distant thunder",
+    "file": "nature/013_distant-thunder.mp3",
+    "source_id": 243777,
+    "source_name": "distant rain and thunder",
+    "source_url": "https://freesound.org/people/bastipictures/sounds/243777/",
+    "creator": "bastipictures",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 105.601
+  },
+  {
+    "term": "fireplace crackling",
+    "file": "nature/014_fireplace-crackling.mp3",
+    "source_id": 714566,
+    "source_name": "Fire Crackling - Cozy Campfire & Fireplace SFX",
+    "source_url": "https://freesound.org/people/LilMati/sounds/714566/",
+    "creator": "LilMati",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 5.0
+  },
+  {
+    "term": "campfire",
+    "file": "nature/015_campfire.mp3",
+    "source_id": 660296,
+    "source_name": "Campfire deer camp - high wind - foot steps - glass falls over - Part 2.wav",
+    "source_url": "https://freesound.org/people/Ambient-X/sounds/660296/",
+    "creator": "Ambient-X",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 43.4
+  },
+  {
+    "term": "door creak",
+    "file": "foley/016_door-creak.mp3",
+    "source_id": 455323,
+    "source_name": "Heavy Door Creaking_06.wav",
+    "source_url": "https://freesound.org/people/rambler52/sounds/455323/",
+    "creator": "rambler52",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 6.61333
+  },
+  {
+    "term": "door slam",
+    "file": "foley/017_door-slam.mp3",
+    "source_id": 440261,
+    "source_name": "Door Slam - No Reverb.wav",
+    "source_url": "https://freesound.org/people/adriann/sounds/440261/",
+    "creator": "adriann",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 4.19302
+  },
+  {
+    "term": "door knock",
+    "file": "foley/018_door-knock.mp3",
+    "source_id": 256512,
+    "source_name": "Knock on the door 2",
+    "source_url": "https://freesound.org/people/deleted_user_4772965/sounds/256512/",
+    "creator": "deleted_user_4772965",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 9.8
+  },
+  {
+    "term": "old wooden door",
+    "file": "foley/019_old-wooden-door.mp3",
+    "source_id": 583239,
+    "source_name": "FX SaSc Squeak 01 High Old Wood Door Wooden Close.wav",
+    "source_url": "https://freesound.org/people/Profispiesser/sounds/583239/",
+    "creator": "Profispiesser",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 18.4747
+  },
+  {
+    "term": "keys jingling",
+    "file": "foley/020_keys-jingling.mp3",
+    "source_id": 565909,
+    "source_name": "keys jingling.wav",
+    "source_url": "https://freesound.org/people/Fenodyrie/sounds/565909/",
+    "creator": "Fenodyrie",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 5.52349
+  },
+  {
+    "term": "footsteps wood",
+    "file": "foley/021_footsteps-wood.mp3",
+    "source_id": 148801,
+    "source_name": "Footsteps, Solid Wood, Female Socks, Spinning.wav",
+    "source_url": "https://freesound.org/people/SpliceSound/sounds/148801/",
+    "creator": "SpliceSound",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 17.0795
+  },
+  {
+    "term": "footsteps gravel",
+    "file": "foley/022_footsteps-gravel.mp3",
+    "source_id": 537835,
+    "source_name": "two footsteps on gravel",
+    "source_url": "https://freesound.org/people/PostProdDog/sounds/537835/",
+    "creator": "PostProdDog",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 1.55535
+  },
+  {
+    "term": "footsteps snow",
+    "file": "foley/023_footsteps-snow.mp3",
+    "source_id": 384421,
+    "source_name": "Footstep in the snow_03 [RAW]",
+    "source_url": "https://freesound.org/people/cabled_mess/sounds/384421/",
+    "creator": "cabled_mess",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 1.76077
+  },
+  {
+    "term": "footsteps grass",
+    "file": "foley/024_footsteps-grass.mp3",
+    "source_id": 556042,
+    "source_name": "Footsteps_Mountain_Boots_Grass_Mono.wav",
+    "source_url": "https://freesound.org/people/Nox_Sound/sounds/556042/",
+    "creator": "Nox_Sound",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 69.2995
+  },
+  {
+    "term": "footsteps hallway",
+    "file": "foley/025_footsteps-hallway.mp3",
+    "source_id": 432955,
+    "source_name": "footsteps, creaky, hallway, fuma-bformat.wav",
+    "source_url": "https://freesound.org/people/drewhalasz/sounds/432955/",
+    "creator": "drewhalasz",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 36.6304
+  },
+  {
+    "term": "floorboard creak",
+    "file": "foley/027_floorboard-creak.mp3",
+    "source_id": 164522,
+    "source_name": "Creak_floorboard 32.wav",
+    "source_url": "https://freesound.org/people/deleted_user_2104797/sounds/164522/",
+    "creator": "deleted_user_2104797",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 0.433271
+  },
+  {
+    "term": "window opening",
+    "file": "nature/028_window-opening.mp3",
+    "source_id": 50894,
+    "source_name": "car electrical window 5 squeaky button opens.wav",
+    "source_url": "https://freesound.org/people/RutgerMuller/sounds/50894/",
+    "creator": "RutgerMuller",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 4.11274
+  },
+  {
+    "term": "window closing",
+    "file": "nature/029_window-closing.mp3",
+    "source_id": 50891,
+    "source_name": "car electrical window 2 button closes.wav",
+    "source_url": "https://freesound.org/people/RutgerMuller/sounds/50891/",
+    "creator": "RutgerMuller",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 4.55785
+  },
+  {
+    "term": "glass breaking",
+    "file": "foley/030_glass-breaking.mp3",
+    "source_id": 276937,
+    "source_name": "breaking_glass_mirror_Oktava_MK-012.wav",
+    "source_url": "https://freesound.org/people/gladkiy/sounds/276937/",
+    "creator": "gladkiy",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 5.04
+  },
+  {
+    "term": "clock ticking",
+    "file": "foley/031_clock-ticking.mp3",
+    "source_id": 490323,
+    "source_name": "Clock_02.wav",
+    "source_url": "https://freesound.org/people/knufds/sounds/490323/",
+    "creator": "knufds",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 45.6853
+  },
+  {
+    "term": "grandfather clock",
+    "file": "foley/032_grandfather-clock.mp3",
+    "source_id": 458590,
+    "source_name": "Grandfather Clock Striking at 45 Minute Mark.aif",
+    "source_url": "https://freesound.org/people/DiArchangeli/sounds/458590/",
+    "creator": "DiArchangeli",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 32.6847
+  },
+  {
+    "term": "telephone ringing",
+    "file": "misc/033_telephone-ringing.mp3",
+    "source_id": 520723,
+    "source_name": "Six analog telephones ringing",
+    "source_url": "https://freesound.org/people/pimstoltz/sounds/520723/",
+    "creator": "pimstoltz",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 24.7461
+  },
+  {
+    "term": "mobile phone vibration",
+    "file": "misc/034_mobile-phone-vibration.mp3",
+    "source_id": 475187,
+    "source_name": "Vibration mobile Phone",
+    "source_url": "https://freesound.org/people/Sheyvan/sounds/475187/",
+    "creator": "Sheyvan",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 39.9341
+  },
+  {
+    "term": "radio static",
+    "file": "misc/035_radio-static.mp3",
+    "source_id": 724702,
+    "source_name": "Buzzy Radio Static - Industrial SFX",
+    "source_url": "https://freesound.org/people/9voltplasma/sounds/724702/",
+    "creator": "9voltplasma",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 14.0945
+  },
+  {
+    "term": "typewriter typing",
+    "file": "foley/036_typewriter-typing.mp3",
+    "source_id": 586852,
+    "source_name": "Typewriter typing test (typewriter turned on)",
+    "source_url": "https://freesound.org/people/zrrion/sounds/586852/",
+    "creator": "zrrion",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 94.7374
+  },
+  {
+    "term": "keyboard typing",
+    "file": "foley/037_keyboard-typing.mp3",
+    "source_id": 546165,
+    "source_name": "Keyboard Typing 8 (HHKB, Topre)",
+    "source_url": "https://freesound.org/people/grcekh/sounds/546165/",
+    "creator": "grcekh",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 149.502
+  },
+  {
+    "term": "paper rustle",
+    "file": "foley/038_paper-rustle.mp3",
+    "source_id": 731483,
+    "source_name": "paper_Rustling_02",
+    "source_url": "https://freesound.org/people/Spaghetto87/sounds/731483/",
+    "creator": "Spaghetto87",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 10.9783
+  },
+  {
+    "term": "book page turn",
+    "file": "foley/039_book-page-turn.mp3",
+    "source_id": 641757,
+    "source_name": "Book page turning.wav",
+    "source_url": "https://freesound.org/people/eZZin/sounds/641757/",
+    "creator": "eZZin",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 19.2695
+  },
+  {
+    "term": "pen writing",
+    "file": "foley/040_pen-writing.mp3",
+    "source_id": 337086,
+    "source_name": "writing - pen 01.wav",
+    "source_url": "https://freesound.org/people/Anthousai/sounds/337086/",
+    "creator": "Anthousai",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 17.755
+  },
+  {
+    "term": "car engine start",
+    "file": "transport/041_car-engine-start.mp3",
+    "source_id": 401554,
+    "source_name": "SFX_Car_Engine_Inside_Start.wav",
+    "source_url": "https://freesound.org/people/GiocoSound/sounds/401554/",
+    "creator": "GiocoSound",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 2.516
+  },
+  {
+    "term": "car passing",
+    "file": "transport/042_car-passing.mp3",
+    "source_id": 583291,
+    "source_name": "BG SaSc Car Passes Slow Speed Cars Pass Passing Berlin.wav",
+    "source_url": "https://freesound.org/people/Profispiesser/sounds/583291/",
+    "creator": "Profispiesser",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 76.0907
+  },
+  {
+    "term": "train passing",
+    "file": "nature/043_train-passing.mp3",
+    "source_id": 591979,
+    "source_name": "Train Passing By 86 with Bell, Screeching.mp3",
+    "source_url": "https://freesound.org/people/FunWithSound/sounds/591979/",
+    "creator": "FunWithSound",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 33.8
+  },
+  {
+    "term": "train whistle",
+    "file": "nature/044_train-whistle.mp3",
+    "source_id": 591974,
+    "source_name": "Train Passing By 83 with Bell, Steam Whistle, Chugging.mp3",
+    "source_url": "https://freesound.org/people/FunWithSound/sounds/591974/",
+    "creator": "FunWithSound",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 23.76
+  },
+  {
+    "term": "airplane flyover",
+    "file": "transport/045_airplane-flyover.mp3",
+    "source_id": 211870,
+    "source_name": "AIRPLANE FLYOVER.mp3",
+    "source_url": "https://freesound.org/people/tubbers/sounds/211870/",
+    "creator": "tubbers",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 30.1594
+  },
+  {
+    "term": "bicycle bell",
+    "file": "transport/046_bicycle-bell.mp3",
+    "source_id": 323126,
+    "source_name": "Bicycle_Bell_from_BikeKitchen_Augsburg_06.wav",
+    "source_url": "https://freesound.org/people/geraldfiebig/sounds/323126/",
+    "creator": "geraldfiebig",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 11.563
+  },
+  {
+    "term": "boat horn",
+    "file": "transport/047_boat-horn.mp3",
+    "source_id": 806015,
+    "source_name": "Sky Princess \"Love Boat\" horns leaving Southampton Docks",
+    "source_url": "https://freesound.org/people/richwise/sounds/806015/",
+    "creator": "richwise",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 45.6753
+  },
+  {
+    "term": "city traffic",
+    "file": "transport/048_city-traffic.mp3",
+    "source_id": 684940,
+    "source_name": "Traffic near border post with cars passing by and dog barking recorded in small city Sonoyta in Mexico",
+    "source_url": "https://freesound.org/people/felix.blume/sounds/684940/",
+    "creator": "felix.blume",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 117.733
+  },
+  {
+    "term": "subway ambience",
+    "file": "transport/049_subway-ambience.mp3",
+    "source_id": 420824,
+    "source_name": "Santiago(Chile) Subway Line 1 from car between U. de Chile and Baquedano (amb).",
+    "source_url": "https://freesound.org/people/humi74/sounds/420824/",
+    "creator": "humi74",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 152.059
+  },
+  {
+    "term": "crowd murmur",
+    "file": "human/050_crowd-murmur.mp3",
+    "source_id": 453906,
+    "source_name": "crowd int large hall carpeted murmur2 busier Montreal, Canada.flac",
+    "source_url": "https://freesound.org/people/kyles/sounds/453906/",
+    "creator": "kyles",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 136.0
+  },
+  {
+    "term": "applause",
+    "file": "human/051_applause.mp3",
+    "source_id": 480683,
+    "source_name": "R02-07-Steady Applause Medium Crowd.wav",
+    "source_url": "https://freesound.org/people/craigsmith/sounds/480683/",
+    "creator": "craigsmith",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 6.95606
+  },
+  {
+    "term": "children playing",
+    "file": "human/052_children-playing.mp3",
+    "source_id": 260125,
+    "source_name": "Kids, toddlers, children playing, crying.wav",
+    "source_url": "https://freesound.org/people/SpliceSound/sounds/260125/",
+    "creator": "SpliceSound",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 121.719
+  },
+  {
+    "term": "restaurant ambience",
+    "file": "misc/053_restaurant-ambience.mp3",
+    "source_id": 394678,
+    "source_name": "ambience - restaurant.WAV",
+    "source_url": "https://freesound.org/people/soundtracvkradio/sounds/394678/",
+    "creator": "soundtracvkradio",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 135.255
+  },
+  {
+    "term": "market ambience",
+    "file": "misc/054_market-ambience.mp3",
+    "source_id": 705302,
+    "source_name": "Market fair ambience with crowd hubbub far and cars passing",
+    "source_url": "https://freesound.org/people/felix.blume/sounds/705302/",
+    "creator": "felix.blume",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 99.8947
+  },
+  {
+    "term": "school bell",
+    "file": "fantasy/055_school-bell.mp3",
+    "source_id": 403459,
+    "source_name": "Modern School Bell",
+    "source_url": "https://freesound.org/people/BennettFilmTeacher/sounds/403459/",
+    "creator": "BennettFilmTeacher",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 5.79746
+  },
+  {
+    "term": "heartbeat",
+    "file": "human/056_heartbeat.mp3",
+    "source_id": 784657,
+    "source_name": "heartbeat sub kick - soft",
+    "source_url": "https://freesound.org/people/music_is_wiggly_air/sounds/784657/",
+    "creator": "music_is_wiggly_air",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 0.373855
+  },
+  {
+    "term": "breathing nervous",
+    "file": "human/057_breathing-nervous.mp3",
+    "source_id": 388773,
+    "source_name": "NERVOUS BREATHING.wav",
+    "source_url": "https://freesound.org/people/ThatMisfit/sounds/388773/",
+    "creator": "ThatMisfit",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 15.3173
+  },
+  {
+    "term": "deep sigh",
+    "file": "human/058_deep-sigh.mp3",
+    "source_id": 318087,
+    "source_name": "Sigh_3_Male_Deep",
+    "source_url": "https://freesound.org/people/Drkvixn91/sounds/318087/",
+    "creator": "Drkvixn91",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 2.66807
+  },
+  {
+    "term": "whisper",
+    "file": "human/059_whisper.mp3",
+    "source_id": 193808,
+    "source_name": "Four_Voices_Whispering_5.wav",
+    "source_url": "https://freesound.org/people/geoneo0/sounds/193808/",
+    "creator": "geoneo0",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 15.0
+  },
+  {
+    "term": "ghost whisper",
+    "file": "human/060_ghost-whisper.mp3",
+    "source_id": 194628,
+    "source_name": "Ghostly Whispering",
+    "source_url": "https://freesound.org/people/qubodup/sounds/194628/",
+    "creator": "qubodup",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 90.0
+  },
+  {
+    "term": "evil laugh",
+    "file": "human/061_evil-laugh.mp3",
+    "source_id": 169826,
+    "source_name": "Evil Laugh.wav",
+    "source_url": "https://freesound.org/people/timtube/sounds/169826/",
+    "creator": "timtube",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 8.12263
+  },
+  {
+    "term": "scream",
+    "file": "human/062_scream.mp3",
+    "source_id": 547189,
+    "source_name": "Voice_AdultMale_DeathScream_10.wav",
+    "source_url": "https://freesound.org/people/MrFossy/sounds/547189/",
+    "creator": "MrFossy",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 1.13848
+  },
+  {
+    "term": "crying",
+    "file": "human/063_crying.mp3",
+    "source_id": 211528,
+    "source_name": "Crying newborn baby child 2.WAV",
+    "source_url": "https://freesound.org/people/the_yura/sounds/211528/",
+    "creator": "the_yura",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 23.0938
+  },
+  {
+    "term": "cough",
+    "file": "human/064_cough.mp3",
+    "source_id": 151212,
+    "source_name": "Cough (2)",
+    "source_url": "https://freesound.org/people/OwlStorm/sounds/151212/",
+    "creator": "OwlStorm",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 1.61331
+  },
+  {
+    "term": "snoring",
+    "file": "human/065_snoring.mp3",
+    "source_id": 512981,
+    "source_name": "snoring 2.wav",
+    "source_url": "https://freesound.org/people/Vital_Sounds/sounds/512981/",
+    "creator": "Vital_Sounds",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 48.042
+  },
+  {
+    "term": "cat meow",
+    "file": "animals/066_cat-meow.mp3",
+    "source_id": 732520,
+    "source_name": "Young Cat Meow",
+    "source_url": "https://freesound.org/people/Lukey1028/sounds/732520/",
+    "creator": "Lukey1028",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 1.18096
+  },
+  {
+    "term": "dog barking",
+    "file": "animals/067_dog-barking.mp3",
+    "source_id": 155312,
+    "source_name": "Dog Barking",
+    "source_url": "https://freesound.org/people/Jace/sounds/155312/",
+    "creator": "Jace",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 5.49152
+  },
+  {
+    "term": "horse gallop",
+    "file": "animals/068_horse-gallop.mp3",
+    "source_id": 574315,
+    "source_name": "86 - Galloping horse Caballo galopando",
+    "source_url": "https://freesound.org/people/GiordanoFabricio/sounds/574315/",
+    "creator": "GiordanoFabricio",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 63.781
+  },
+  {
+    "term": "wolf howl",
+    "file": "nature/069_wolf-howl.mp3",
+    "source_id": 370357,
+    "source_name": "Wolf Saw Howl.aif",
+    "source_url": "https://freesound.org/people/JohnLaVine333/sounds/370357/",
+    "creator": "JohnLaVine333",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 20.0
+  },
+  {
+    "term": "insects buzzing",
+    "file": "nature/070_insects-buzzing.mp3",
+    "source_id": 390733,
+    "source_name": "Buzzing Insect Short.mp3",
+    "source_url": "https://freesound.org/people/FunWithSound/sounds/390733/",
+    "creator": "FunWithSound",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 1.01878
+  },
+  {
+    "term": "sword clash",
+    "file": "fantasy/071_sword-clash.mp3",
+    "source_id": 326865,
+    "source_name": "Sword_Clash (59).wav",
+    "source_url": "https://freesound.org/people/JohnBuhr/sounds/326865/",
+    "creator": "JohnBuhr",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 1.24864
+  },
+  {
+    "term": "gun cock",
+    "file": "fantasy/072_gun-cock.mp3",
+    "source_id": 182252,
+    "source_name": "loy's gun cock+bullet in-clip.wav",
+    "source_url": "https://freesound.org/people/martian/sounds/182252/",
+    "creator": "martian",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 0.573628
+  },
+  {
+    "term": "gunshot distant",
+    "file": "fantasy/073_gunshot-distant.mp3",
+    "source_id": 337242,
+    "source_name": "Distant Three Round Burst",
+    "source_url": "https://freesound.org/people/adrilahan/sounds/337242/",
+    "creator": "adrilahan",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 2.1
+  },
+  {
+    "term": "explosion distant",
+    "file": "fantasy/074_explosion-distant.mp3",
+    "source_id": 109749,
+    "source_name": "multi hits distant orchestra.aiff",
+    "source_url": "https://freesound.org/people/SoundCollectah/sounds/109749/",
+    "creator": "SoundCollectah",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 32.1562
+  },
+  {
+    "term": "punch impact",
+    "file": "fantasy/075_punch-impact.mp3",
+    "source_id": 706883,
+    "source_name": "Impact on house window pane with door flapping, louder punch, vibration and insect buzz",
+    "source_url": "https://freesound.org/people/felix.blume/sounds/706883/",
+    "creator": "felix.blume",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 54.613
+  },
+  {
+    "term": "magic spell",
+    "file": "fantasy/076_magic-spell.mp3",
+    "source_id": 814946,
+    "source_name": "Magical Mystery Spell Burst",
+    "source_url": "https://freesound.org/people/CVLTIV8R/sounds/814946/",
+    "creator": "CVLTIV8R",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 11.7595
+  },
+  {
+    "term": "whoosh",
+    "file": "fantasy/077_whoosh.mp3",
+    "source_id": 342982,
+    "source_name": "Whoosh set 1",
+    "source_url": "https://freesound.org/people/sramse/sounds/342982/",
+    "creator": "sramse",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 17.1363
+  },
+  {
+    "term": "teleport",
+    "file": "fantasy/078_teleport.mp3",
+    "source_id": 220193,
+    "source_name": "Teleport - Spacey",
+    "source_url": "https://freesound.org/people/GameAudio/sounds/220193/",
+    "creator": "GameAudio",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 0.978685
+  },
+  {
+    "term": "monster growl",
+    "file": "nature/079_monster-growl.mp3",
+    "source_id": 77635,
+    "source_name": "growl4.wav",
+    "source_url": "https://freesound.org/people/lendrick/sounds/77635/",
+    "creator": "lendrick",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 2.50776
+  },
+  {
+    "term": "zombie moan",
+    "file": "animals/080_zombie-moan.mp3",
+    "source_id": 196721,
+    "source_name": "SZ_Zombies_01.wav",
+    "source_url": "https://freesound.org/people/PaulMorek/sounds/196721/",
+    "creator": "PaulMorek",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 4.08218
+  },
+  {
+    "term": "treasure chest opening",
+    "file": "foley/081_treasure-chest-opening.mp3",
+    "source_id": 771164,
+    "source_name": "Treasure Chest Open",
+    "source_url": "https://freesound.org/people/steprock/sounds/771164/",
+    "creator": "steprock",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 1.34471
+  },
+  {
+    "term": "coins dropping",
+    "file": "foley/082_coins-dropping.mp3",
+    "source_id": 510733,
+    "source_name": "Coin dropped on table 2",
+    "source_url": "https://freesound.org/people/HoseNoseSounds/sounds/510733/",
+    "creator": "HoseNoseSounds",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 2.4629
+  },
+  {
+    "term": "coin pickup",
+    "file": "foley/083_coin-pickup.mp3",
+    "source_id": 608431,
+    "source_name": "Shiny Coin Pickup",
+    "source_url": "https://freesound.org/people/plasterbrain/sounds/608431/",
+    "creator": "plasterbrain",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 1.15898
+  },
+  {
+    "term": "lock unlocking",
+    "file": "foley/084_lock-unlocking.mp3",
+    "source_id": 479347,
+    "source_name": "Small suitcase lock and keys - Handling - Locking - Unlocking.wav",
+    "source_url": "https://freesound.org/people/khenshom/sounds/479347/",
+    "creator": "khenshom",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 30.5515
+  },
+  {
+    "term": "alarm siren",
+    "file": "fantasy/085_alarm-siren.mp3",
+    "source_id": 772970,
+    "source_name": "Siren Alarm Test - Muffled (Denoised)",
+    "source_url": "https://freesound.org/people/Licorne_En_Fer/sounds/772970/",
+    "creator": "Licorne_En_Fer",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 108.0
+  },
+  {
+    "term": "police siren",
+    "file": "fantasy/086_police-siren.mp3",
+    "source_id": 70938,
+    "source_name": "police2.wav",
+    "source_url": "https://freesound.org/people/guitarguy1985/sounds/70938/",
+    "creator": "guitarguy1985",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 4.31537
+  },
+  {
+    "term": "church bell",
+    "file": "fantasy/087_church-bell.mp3",
+    "source_id": 852489,
+    "source_name": "20260421_00h30 Church bell half hour mark",
+    "source_url": "https://freesound.org/people/Sadiquecat/sounds/852489/",
+    "creator": "Sadiquecat",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 31.044
+  },
+  {
+    "term": "wind chimes",
+    "file": "nature/088_wind-chimes.mp3",
+    "source_id": 398495,
+    "source_name": "wind chimes - rough.wav",
+    "source_url": "https://freesound.org/people/Anthousai/sounds/398495/",
+    "creator": "Anthousai",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 26.2201
+  },
+  {
+    "term": "music box",
+    "file": "fantasy/089_music-box.mp3",
+    "source_id": 336608,
+    "source_name": "music box - wind up 01.wav",
+    "source_url": "https://freesound.org/people/Anthousai/sounds/336608/",
+    "creator": "Anthousai",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 4.71329
+  },
+  {
+    "term": "piano suspense",
+    "file": "foley/090_piano-suspense.mp3",
+    "source_id": 354050,
+    "source_name": "Piano Song Loop #3 The Creeps by KLEBER KGF",
+    "source_url": "https://freesound.org/people/Kleber_KGF/sounds/354050/",
+    "creator": "Kleber_KGF",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 20.6832
+  },
+  {
+    "term": "violin tension",
+    "file": "fantasy/091_violin-tension.mp3",
+    "source_id": 736302,
+    "source_name": "Hanging violin in bell resonance chamber1",
+    "source_url": "https://freesound.org/people/Jim-Bretherick/sounds/736302/",
+    "creator": "Jim-Bretherick",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 136.319
+  },
+  {
+    "term": "drum hit",
+    "file": "fantasy/092_drum-hit.mp3",
+    "source_id": 340472,
+    "source_name": "Junk Drum Kit: Ride (Single Hit)",
+    "source_url": "https://freesound.org/people/deleted_user_5205523/sounds/340472/",
+    "creator": "deleted_user_5205523",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 0.998458
+  },
+  {
+    "term": "cinematic boom",
+    "file": "fantasy/093_cinematic-boom.mp3",
+    "source_id": 255111,
+    "source_name": "Cinematic_Boom_Rhapsodize.wav",
+    "source_url": "https://freesound.org/people/rhapsodize/sounds/255111/",
+    "creator": "rhapsodize",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 7.73467
+  },
+  {
+    "term": "thunderstorm ambience",
+    "file": "nature/094_thunderstorm-ambience.mp3",
+    "source_id": 554139,
+    "source_name": "thunderstorm.wav",
+    "source_url": "https://freesound.org/people/TechRonin/sounds/554139/",
+    "creator": "TechRonin",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 28.0
+  },
+  {
+    "term": "space ambience",
+    "file": "fantasy/095_space-ambience.mp3",
+    "source_id": 401205,
+    "source_name": "Space Monster",
+    "source_url": "https://freesound.org/people/OSFX/sounds/401205/",
+    "creator": "OSFX",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 131.5
+  },
+  {
+    "term": "computer beep",
+    "file": "fantasy/096_computer-beep.mp3",
+    "source_id": 543048,
+    "source_name": "as_ab_al_computer_noise_6_16bit.wav",
+    "source_url": "https://freesound.org/people/Clusman/sounds/543048/",
+    "creator": "Clusman",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 0.3125
+  },
+  {
+    "term": "machine hum",
+    "file": "fantasy/097_machine-hum.mp3",
+    "source_id": 641485,
+    "source_name": "Horses and donkeys brays, chewing hay and walking, a bird, the noise of the road behind, city hum, a bird and far machine noises, recorded at Florence farmyard",
+    "source_url": "https://freesound.org/people/felix.blume/sounds/641485/",
+    "creator": "felix.blume",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 96.8157
+  },
+  {
+    "term": "camera shutter",
+    "file": "fantasy/099_camera-shutter.mp3",
+    "source_id": 579882,
+    "source_name": "Polaroid One Step Camera Shutter.wav",
+    "source_url": "https://freesound.org/people/yfjesse/sounds/579882/",
+    "creator": "yfjesse",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 3.5
+  },
+  {
+    "term": "match strike",
+    "file": "foley/100_match-strike.mp3",
+    "source_id": 423810,
+    "source_name": "Match strike 02",
+    "source_url": "https://freesound.org/people/scalywhale/sounds/423810/",
+    "creator": "scalywhale",
+    "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+    "duration_seconds": 2.12136
+  }
+]

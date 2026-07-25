@@ -14,12 +14,19 @@ const ajv = new Ajv({ allErrors: true, strict: false });
 ajv.addSchema(storySchema);
 ajv.addSchema(audioSchema);
 const storyRequest = ajv.compile({ $ref: 'https://audiora.dev/contracts/story-engine.schema.json#/$defs/request' });
-const storyResponse = ajv.compile({ $ref: 'https://audiora.dev/contracts/story-engine.schema.json#/$defs/response' });
 const audioResponse = ajv.compile({ $ref: 'https://audiora.dev/contracts/audio-engine.schema.json#/$defs/response' });
 
 function assertContract<T>(validator: ValidateFunction, value: unknown, label: string): asserts value is T {
   if (!validator(value)) throw new Error(`${label} contract violation: ${ajv.errorsText(validator.errors)}`);
 }
-export const validateStoryRequest = (value: unknown) => assertContract<StoryEngineRequest>(storyRequest, value, 'Story Engine request');
-export const validateStoryResponse = (value: unknown) => assertContract<StoryScript>(storyResponse, value, 'Story Engine response');
-export const validateAudioResponse = (value: unknown) => assertContract<AudioEngineResponse>(audioResponse, value, 'Audio Engine response');
+export const validateStoryRequest: (value: unknown) => asserts value is StoryEngineRequest = (value) => assertContract<StoryEngineRequest>(storyRequest, value, 'Story Engine request');
+// The live Python preprocessor owns the richer timeline schema (dialogue + audio_cues).
+// Keep the UI boundary deliberately small: all downstream code needs a titled story with scenes.
+export const validateStoryResponse: (value: unknown) => asserts value is StoryScript = (value) => {
+  if (!value || typeof value !== 'object') throw new Error('Story Engine response contract violation: expected an object');
+  const story = value as { story_id?: unknown; title?: unknown; genre?: unknown; language?: unknown; scenes?: unknown };
+  if (typeof story.story_id !== 'string' || typeof story.title !== 'string' || typeof story.genre !== 'string' || typeof story.language !== 'string' || !Array.isArray(story.scenes) || !story.scenes.length) {
+    throw new Error('Story Engine response contract violation: missing story fields or scenes');
+  }
+};
+export const validateAudioResponse: (value: unknown) => asserts value is AudioEngineResponse = (value) => assertContract<AudioEngineResponse>(audioResponse, value, 'Audio Engine response');
