@@ -12,6 +12,10 @@ Audiora turns a prompt, a book title, or a remembered dream into a cinematic aud
 
 The frontend proxies `/api` to FastAPI at `http://localhost:8000`. API keys are read only by the FastAPI process.
 
+For Databricks Apps deployment, including `app.yaml`, secret resources, durable
+Unity Catalog volume storage, and production checks, see
+[DEPLOY_DATABRICKS.md](./DEPLOY_DATABRICKS.md).
+
 ## Live Python audio services
 
 The complete OpenAI story preprocessor, ElevenLabs renderer, sound catalogue, and local sound library live in [`services/story-audio/`](./services/story-audio/). Generated dialogue clips and final WAV files are intentionally ignored by Git.

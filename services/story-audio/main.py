@@ -403,7 +403,7 @@ class BuildScriptRequest(StrictModel):
     characters: list[CharacterInput] = []
 
 
-LIBRARY_PATH = HERE / "storage" / "library.json"
+LIBRARY_PATH = Path(os.getenv("LIBRARY_STORAGE_PATH", HERE / "storage" / "library.json"))
 
 
 def brief_source(request: BriefRequest) -> str:
@@ -531,4 +531,8 @@ def serve_frontend(client_path: str = ""):
 if __name__ == "__main__":
     import uvicorn
 
-    uvicorn.run(app, host=os.getenv("AUDIORA_HOST", "127.0.0.1"), port=int(os.getenv("AUDIORA_PORT", "8000")))
+    uvicorn.run(
+        app,
+        host=os.getenv("UVICORN_HOST", os.getenv("AUDIORA_HOST", "127.0.0.1")),
+        port=int(os.getenv("UVICORN_PORT", os.getenv("DATABRICKS_APP_PORT", os.getenv("AUDIORA_PORT", "8000")))),
+    )

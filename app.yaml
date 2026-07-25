@@ -1,0 +1,13 @@
+# Databricks Apps runtime configuration. Create two Secret resources in the
+# Databricks App UI with these exact resource keys before deploying.
+command: ["python", "services/story-audio/main.py"]
+env:
+  - name: OPENAI_API_KEY
+    valueFrom: audiora_openai_key
+  - name: ELEVENLABS_API_KEY
+    valueFrom: audiora_elevenlabs_key
+  # Optional: point both paths at a Unity Catalog volume for durable output.
+  # - name: AUDIO_OUTPUT_ROOT
+  #   value: /Volumes/<catalog>/<schema>/<volume>/audiora/rendered
+  # - name: LIBRARY_STORAGE_PATH
+  #   value: /Volumes/<catalog>/<schema>/<volume>/audiora/library.json
