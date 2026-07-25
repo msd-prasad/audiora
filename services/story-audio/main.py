@@ -18,7 +18,7 @@ from uuid import uuid4
 
 from fastapi import FastAPI, Header, HTTPException
 from openai import APIError, OpenAI
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 from dotenv import load_dotenv
 
 from sound_catalog import catalog_prompt, valid_sound_pairs
@@ -34,11 +34,27 @@ class StrictModel(BaseModel):
 
 
 class GenerateStoryRequest(StrictModel):
-    prompt: Annotated[str, Field(min_length=8, max_length=4_000)]
+    # ``prompt`` remains available for short ideas; ``story`` is for source material.
+    prompt: Annotated[str | None, Field(min_length=8, max_length=4_000)] = None
+    story: Annotated[str | None, Field(min_length=20, max_length=30_000)] = None
     language: Annotated[str, Field(pattern=r"^[a-z]{2}(-[A-Z]{2})?$")] = "en"
     target_minutes: Annotated[int, Field(ge=1, le=12)] = 4
     audience: Annotated[str, Field(min_length=2, max_length=100)] = "general adult"
     content_rating: Literal["G", "PG", "PG-13"] = "PG"
+
+    @model_validator(mode="after")
+    def require_story_input(self) -> "GenerateStoryRequest":
+        if not self.prompt and not self.story:
+            raise ValueError("Provide either a short prompt or a detailed story.")
+        return self
+
+    @property
+    def source_type(self) -> str:
+        return "detailed_story" if self.story else "rough_idea"
+
+    @property
+    def source_text(self) -> str:
+        return self.story or self.prompt or ""
 
 
 class CharacterBlueprint(StrictModel):
@@ -251,21 +267,38 @@ def generate_story(
 
     client = OpenAI(api_key=api_key)
     model = os.getenv("OPENAI_MODEL", "gpt-4.1")
-    planning_input = request.model_dump_json()
+    planning_input = json.dumps(
+        {
+            "source_type": request.source_type,
+            "source_text": request.source_text,
+            "language": request.language,
+            "target_minutes": request.target_minutes,
+            "audience": request.audience,
+            "content_rating": request.content_rating,
+        },
+        ensure_ascii=False,
+    )
     try:
         blueprint = structured_response(
             client,
             model,
-            "You are a cinematic story architect. Expand the listener's idea into a specific, "
-            "emotionally coherent story blueprint. Create a beginning, escalation, turning point, "
-            "and resonant ending. Design characters that sound distinct when performed. Do not write "
-            "the full script yet; return only the requested JSON.",
+            "You are a cinematic story architect. For source_type='rough_idea', expand the listener's "
+            "idea into a specific, emotionally coherent story blueprint with a beginning, escalation, "
+            "turning point, and resonant ending. For source_type='detailed_story', preserve the supplied "
+            "plot, characters, relationships, setting, and stated scene background; only organize it "
+            "into scenes and add audio-first performance direction. Do not invent a replacement plot or "
+            "major events. Design characters that sound distinct when performed. Do not write the full "
+            "script yet; return only the requested JSON.",
             planning_input,
             StoryBlueprint,
         )
         production_input = json.dumps(
             {
-                "request": request.model_dump(),
+                "request": {
+                    **request.model_dump(exclude={"prompt", "story"}),
+                    "source_type": request.source_type,
+                    "source_text": request.source_text,
+                },
                 "blueprint": blueprint.model_dump(),
                 "sound_catalog": catalog_prompt(),
             },
@@ -275,7 +308,10 @@ def generate_story(
             client,
             model,
             "You are an award-winning audio drama writer and sound designer. Convert the supplied "
-            "blueprint into an immersive table-read document for text-to-speech and audio mixing. "
+            "blueprint and source material into an immersive table-read document for text-to-speech and "
+            "audio mixing. When source_type is detailed_story, faithfully adapt its events and visual "
+            "background into scenes; do not replace its story with a new one. You may condense, add brief "
+            "spoken transitions, and soften details as required by content_rating. "
             "Write for ears: short speakable sentences, natural contractions, occasional restrained "
             "hesitations such as 'um' only when character-true, and meaningful silence represented by "
             "pause fields. Each dialogue 'sentence' must be a single ElevenLabs-ready speech string: "
