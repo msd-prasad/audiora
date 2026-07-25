@@ -64,7 +64,14 @@ export class LiveStoryEngineClient implements StoryEngineClient {
   async buildScript(request: StoryEngineRequest): Promise<StoryScript> {
     validateStoryRequest(request);
     let response: Response;
-    try { response = await fetch(this.url, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(request), signal: AbortSignal.timeout(60_000) }); }
+    try {
+      response = await fetch(this.url, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', 'X-OpenAI-API-Key': config.OPENAI_API_KEY! },
+        body: JSON.stringify({ prompt: request.briefStory, language: 'en', target_minutes: 4, audience: 'family', content_rating: 'PG' }),
+        signal: AbortSignal.timeout(180_000)
+      });
+    }
     catch { throw new AppError(503, 'Could not reach the Story Engine.', 'STORY_ENGINE_UNREACHABLE'); }
     if (!response.ok) throw new AppError(502, `Story Engine rejected the request (${response.status}).`, 'STORY_ENGINE_FAILURE');
     const body: unknown = await response.json();

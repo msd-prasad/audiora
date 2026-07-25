@@ -33,12 +33,23 @@ export class LiveAudioEngineClient implements AudioEngineClient {
   async renderAudio(script: StoryScript): Promise<AudioEngineResponse> {
     validateStoryResponse(script);
     let response: Response;
-    try { response = await fetch(this.url, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(script), signal: AbortSignal.timeout(120_000) }); }
+    try {
+      response = await fetch(this.url, {
+        method: 'POST', headers: { 'content-type': 'application/json', 'X-ElevenLabs-API-Key': config.ELEVENLABS_API_KEY! },
+        body: JSON.stringify(script), signal: AbortSignal.timeout(600_000)
+      });
+    }
     catch { throw new AppError(503, 'Could not reach the Audio Engine.', 'AUDIO_ENGINE_UNREACHABLE'); }
     if (!response.ok) throw new AppError(502, `Audio Engine rejected the request (${response.status}).`, 'AUDIO_ENGINE_FAILURE');
     const body: unknown = await response.json();
     try { validateAudioResponse(body); } catch { throw new AppError(502, 'Audio Engine returned an invalid contract response.', 'AUDIO_ENGINE_CONTRACT_ERROR'); }
-    return body as AudioEngineResponse;
+    const rendered = body as AudioEngineResponse;
+    if (rendered.audio_url.startsWith('/files/')) {
+      const filePath = rendered.audio_url.slice('/files/'.length);
+      if (filePath.split('/').some((segment) => !segment || segment === '.' || segment === '..')) throw new AppError(502, 'Audio Engine returned an unsafe file path.', 'AUDIO_ENGINE_PATH_INVALID');
+      rendered.audio_url = `/api/generated-audio/${filePath}`;
+    }
+    return rendered;
   }
 }
 export const createAudioEngineClient = (): AudioEngineClient => config.AUDIO_ENGINE_MODE === 'live'
