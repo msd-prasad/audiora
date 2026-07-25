@@ -1,0 +1,12 @@
+{
+  "name": "audiora",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@10.12.1",
+  "scripts": {
+    "dev": "pnpm --parallel --filter @audiora/backend --filter @audiora/frontend dev",
+    "build": "pnpm --filter @audiora/backend build && pnpm --filter @audiora/frontend build",
+    "test": "pnpm --filter @audiora/backend test",
+    "typecheck": "pnpm -r typecheck"
+  }
+}
