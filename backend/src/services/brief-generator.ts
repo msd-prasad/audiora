@@ -11,7 +11,14 @@ const requestSchema = z.discriminatedUnion('mode', [
 ]).superRefine((value, ctx) => {
   if (value.mode !== 'existing_book' && ![value.text, value.audioTranscript, value.mode === 'raw_story' ? value.pdfText : null].some((item) => item?.trim())) ctx.addIssue({ code: 'custom', message: 'Add a typed story, voice transcript, or PDF text.' });
 });
-const resultSchema = z.object({ briefStory: z.string().min(300).max(900), suggestedTitle: z.string().min(1).max(100), suggestedGenre: z.string().min(1).max(80) });
+const storyWordCount = (text: string) => text.trim().split(/\s+/).filter(Boolean).length;
+const resultSchema = z.object({
+  // The product contract is expressed in words—not characters. The old 900-character
+  // ceiling rejected perfectly valid 300–800 word AI stories (usually 2,000+ characters).
+  briefStory: z.string().refine((story) => storyWordCount(story) >= 300 && storyWordCount(story) <= 800, 'briefStory must contain 300–800 words'),
+  suggestedTitle: z.string().min(1).max(100),
+  suggestedGenre: z.string().min(1).max(80)
+});
 
 const sourceFor = (request: BriefRequest) => request.mode === 'existing_book'
   ? `${request.title}${request.author ? ` by ${request.author}` : ''}`
@@ -55,7 +62,8 @@ export class BriefGenerator {
     try {
       const response = await client.responses.create({
         model: config.OPENAI_MODEL,
-        input: [{ role: 'system', content: 'You are Audiora\'s story editor. Return strict JSON only with briefStory (300–800 words), suggestedTitle, and suggestedGenre. Use original prose. No markdown.' }, { role: 'user', content: `${modeInstruction}\n\nSource:\n${source}` }],
+        input: [{ role: 'system', content: 'You are Audiora\'s story editor. Return strict JSON only with briefStory, suggestedTitle, and suggestedGenre. briefStory must be 350–550 words of original, narratable prose with a clear beginning, turn, and emotionally satisfying ending. Never use markdown or include commentary outside JSON.' }, { role: 'user', content: `${modeInstruction}\n\nSource:\n${source}` }],
+        max_output_tokens: 2200,
         text: { format: { type: 'json_object' } }
       });
       return resultSchema.parse(JSON.parse(response.output_text));

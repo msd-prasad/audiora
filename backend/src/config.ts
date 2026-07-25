@@ -1,5 +1,13 @@
-import 'dotenv/config';
+import { config as loadDotenv } from 'dotenv';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { z } from 'zod';
+
+// Always load the repository-level .env, whether the backend is launched by pnpm
+// (from backend/) or directly from the project root.
+loadDotenv({ path: resolve(dirname(fileURLToPath(import.meta.url)), '../../.env') });
+
+const optionalUrl = z.preprocess((value) => value === '' ? undefined : value, z.string().url().optional());
 
 const envSchema = z.object({
   PORT: z.coerce.number().default(8787),
@@ -7,9 +15,9 @@ const envSchema = z.object({
   OPENAI_API_KEY: z.string().optional(),
   OPENAI_MODEL: z.string().default('gpt-4.1-mini'),
   STORY_ENGINE_MODE: z.enum(['mock', 'live']).default('mock'),
-  STORY_ENGINE_URL: z.string().url().optional(),
+  STORY_ENGINE_URL: optionalUrl,
   AUDIO_ENGINE_MODE: z.enum(['mock', 'live']).default('mock'),
-  AUDIO_ENGINE_URL: z.string().url().optional(),
+  AUDIO_ENGINE_URL: optionalUrl,
   MOCK_MIN_DELAY_MS: z.coerce.number().min(0).default(1500),
   MOCK_MAX_DELAY_MS: z.coerce.number().min(0).default(4000),
   MOCK_ERROR_RATE: z.coerce.number().min(0).max(1).default(0.03)
