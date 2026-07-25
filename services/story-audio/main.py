@@ -27,7 +27,7 @@ from pydantic import BaseModel, ConfigDict, Field, model_validator
 from dotenv import load_dotenv
 from pypdf import PdfReader
 
-from sound_catalog import catalog_prompt, valid_sound_pairs
+from sound_catalog import catalog_prompt
 from audio_api import OUTPUTS, SOUNDS, render_story
 
 
@@ -244,12 +244,7 @@ def validate_sound_references(story: ImmersiveStory) -> None:
     Story generation should still succeed when an optional ambience or SFX asset
     is unavailable; the dialogue timeline remains the source of truth.
     """
-    allowed = valid_sound_pairs()
-    if not allowed:
-        print("warning: no processed sound catalogue found; rendering dialogue without sound cues")
-        for scene in story.scenes:
-            scene.audio_cues = []
-        return
+    sounds_root = SOUNDS.resolve()
     for scene in story.scenes:
         dialogue_order = {line.id: index for index, line in enumerate(scene.dialogue)}
         usable_cues = []
@@ -265,10 +260,8 @@ def validate_sound_references(story: ImmersiveStory) -> None:
             if starts_after_end or invalid_same_line_range:
                 print(f"warning: cue {cue.id} skipped; invalid timeline range")
                 continue
-            if (cue.sound, cue.file) not in allowed:
-                print(f"warning: cue {cue.id} skipped; not in sound catalogue: {cue.file}")
-                continue
-            if not (SOUNDS / cue.file).is_file():
+            sound_path = (SOUNDS / cue.file).resolve()
+            if not sound_path.is_relative_to(sounds_root) or not sound_path.is_file():
                 print(f"warning: cue {cue.id} skipped; sound file is unavailable: {cue.file}")
                 continue
             usable_cues.append(cue)
