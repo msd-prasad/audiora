@@ -11,6 +11,7 @@ can be supplied instead of OPENAI_API_KEY for a per-request key.
 
 from __future__ import annotations
 
+import base64
 import json
 import os
 from datetime import datetime, timezone
@@ -132,6 +133,8 @@ class CharacterBackground(StrictModel):
     name: str
     gender: Gender
     personality: str
+    spoken_language: str
+    accent: str
     voice_profile: str
 
 
@@ -187,9 +190,12 @@ app = FastAPI(title="Audiora API", version="1.0.0")
 origins = [item.strip() for item in os.getenv("FRONTEND_ORIGIN", "http://localhost:5173,http://127.0.0.1:5173").split(",")]
 app.add_middleware(CORSMiddleware, allow_origins=origins, allow_credentials=False, allow_methods=["*"], allow_headers=["*"])
 app.mount("/api/generated-audio", StaticFiles(directory=OUTPUTS), name="generated-audio")
-COVERS = APP_ROOT / "backend" / "mocks" / "assets" / "covers"
-if COVERS.is_dir():
-    app.mount("/api/assets/covers", StaticFiles(directory=COVERS), name="covers")
+COVERS = HERE / "assets" / "covers"
+COVER_OUTPUTS = Path(os.getenv("COVER_OUTPUT_ROOT", HERE / "rendered" / "covers"))
+COVER_OUTPUTS.mkdir(parents=True, exist_ok=True)
+FALLBACK_COVER_URL = "/api/assets/covers/default-cover.svg"
+app.mount("/api/assets/covers", StaticFiles(directory=COVERS), name="covers")
+app.mount("/api/generated-covers", StaticFiles(directory=COVER_OUTPUTS), name="generated-covers")
 FRONTEND_DIST = APP_ROOT / "frontend" / "dist"
 if FRONTEND_DIST.is_dir():
     app.mount("/assets", StaticFiles(directory=FRONTEND_DIST / "assets"), name="frontend-assets")
@@ -339,9 +345,11 @@ def generate_story(
             "write spoken words directly and use short bracketed delivery cues only where useful, such "
             "as '[whispers]', '[sarcastically]', '[giggles]', '[sighs]', or '[laughs softly]'. Do not "
             "put production instructions outside the sentence. Before scenes, populate "
-            "character_backgrounds with each recurring character's gender, personality, and "
-            "voice_profile. A voice_profile is descriptive (for example, 'warm, grounded baritone'); "
-            "the audio renderer maps it to a real ElevenLabs voice ID. Build scenes with clear acoustic "
+            "character_backgrounds with each recurring character's gender, personality, spoken_language, accent, and "
+            "voice_profile. Preserve the supplied speaking language and accent. Write that character's spoken dialogue "
+            "in their spoken_language, unless the story explicitly says they switch languages. A voice_profile is "
+            "descriptive (for example, 'warm, grounded baritone with a British English accent'); the audio renderer "
+            "maps it to a real ElevenLabs voice ID. Build scenes with clear acoustic "
             "geography and emotional movement. Use only "
             "all audio belongs only in each scene's separate audio_cues timeline—not inside dialogue. "
             "Every audio_cues id is a non-empty string and kind is exactly one of 'ambience', 'music', "
@@ -378,6 +386,8 @@ class CharacterInput(StrictModel):
     name: Annotated[str, Field(min_length=1, max_length=80)]
     gender: Literal["woman", "man", "non-binary", "unspecified"]
     personality: Annotated[str, Field(min_length=1, max_length=240)]
+    spoken_language: Annotated[str, Field(min_length=2, max_length=80)]
+    accent: Annotated[str, Field(max_length=120)]
 
 
 class BriefRequest(StrictModel):
@@ -422,6 +432,51 @@ def read_library() -> list[dict]:
 def write_library(entries: list[dict]) -> None:
     LIBRARY_PATH.parent.mkdir(parents=True, exist_ok=True)
     LIBRARY_PATH.write_text(json.dumps(entries, indent=2), encoding="utf-8")
+
+
+def cover_prompt(story: dict) -> str:
+    """Create cover direction that feels native to Audiora's midnight-and-amber UI."""
+    scenes = story.get("scenes") or []
+    scene_text = " ".join(
+        str(scene.get("description") or scene.get("title") or "")
+        for scene in scenes[:2]
+    )
+    title = str(story.get("title") or "Untitled story")[:160]
+    genre = str(story.get("genre") or "cinematic fiction")[:100]
+    visual_context = scene_text[:1_200] or "an evocative moment from an original audio story"
+    return (
+        "Square premium cover artwork for an immersive audio story. "
+        "Match Audiora's visual language: midnight indigo and deep plum shadows, "
+        "luminous warm amber and soft coral highlights, elegant cinematic atmosphere, "
+        "subtle film grain, layered depth, one memorable central visual motif. "
+        "No words, letters, typography, logos, UI, watermark, or border. "
+        f"Title concept: {title}. Genre: {genre}. Story imagery: {visual_context}"
+    )
+
+
+def generate_cover(story: dict) -> str:
+    """Generate a stored thumbnail, falling back without affecting audio delivery."""
+    api_key = os.getenv("OPENAI_API_KEY")
+    if not api_key:
+        return FALLBACK_COVER_URL
+    try:
+        image = OpenAI(api_key=api_key).images.generate(
+            model=os.getenv("OPENAI_IMAGE_MODEL", "gpt-image-1-mini"),
+            prompt=cover_prompt(story),
+            size="1024x1024",
+            quality="low",
+            output_format="jpeg",
+            output_compression=85,
+        )
+        image_base64 = image.data[0].b64_json if image.data else None
+        if not image_base64:
+            raise ValueError("The image API returned no thumbnail data.")
+        filename = f"cover_{uuid4().hex}.jpg"
+        (COVER_OUTPUTS / filename).write_bytes(base64.b64decode(image_base64))
+        return f"/api/generated-covers/{filename}"
+    except Exception as exc:  # Covers are optional; a render must never fail because artwork does.
+        print(f"OpenAI cover generation failed ({type(exc).__name__}): {exc}")
+        return FALLBACK_COVER_URL
 
 
 @app.exception_handler(HTTPException)
@@ -470,16 +525,26 @@ def generate_brief(request: BriefRequest) -> BriefResponse:
         return structured_response(
             OpenAI(api_key=api_key), os.getenv("OPENAI_MODEL", "gpt-4.1"),
             "You are Audiora's story editor. Return only the requested JSON. briefStory must be original prose, "
-            "suggestedTitle and suggestedGenre must be concise, and characters must have a name, gender, and personality.",
+            "suggestedTitle and suggestedGenre must be concise. For every character include name, gender, "
+            "personality, spoken_language (for example, 'Spanish' or 'English'), and accent (for example, "
+            "'Mexican Spanish', 'British English', or an empty string when no accent is relevant). Infer these "
+            "from the source only when it supports them; never stereotype a character's nationality or ethnicity.",
             payload, BriefResponse,
         )
     except (APIError, ValueError) as exc:
+        # Keep the browser response neutral, but retain the provider's safe
+        # diagnostic in the server log so a deployment issue can be traced.
+        print(f"OpenAI brief generation failed ({type(exc).__name__}): {exc}")
         raise HTTPException(status_code=502, detail="The story editor could not generate a valid brief. Please retry.") from exc
 
 
 @app.post("/api/story/build-script", response_model=ImmersiveStory)
 def build_script(request: BuildScriptRequest) -> ImmersiveStory:
-    character_guide = "\n".join(f"- {item.name} | {item.gender} | {item.personality}" for item in request.characters)
+    character_guide = "\n".join(
+        f"- {item.name} | {item.gender} | {item.personality} | speaks: {item.spoken_language}"
+        f" | accent: {item.accent or 'not specified'}"
+        for item in request.characters
+    )
     source = f"TITLE: {request.title}\nGENRE: {request.genre}\n"
     if character_guide:
         source += f"CHARACTER GUIDE:\n{character_guide}\n"
@@ -492,7 +557,8 @@ def render_audio(story: dict) -> dict:
     result = render_story(story)
     if result["audio_url"].startswith("/files/"):
         result["audio_url"] = "/api/generated-audio/" + result["audio_url"].removeprefix("/files/")
-    cover = "/api/assets/covers/velvet-cosmos.svg"
+    cover = generate_cover(story)
+    result["coverImageUrl"] = cover
     entries = read_library()
     entries.append({
         "id": str(uuid4()), "title": story.get("title", "Untitled story"), "genre": story.get("genre", "Story"),

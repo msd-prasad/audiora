@@ -1,8 +1,8 @@
 export type InputMode = 'raw_story' | 'existing_book' | 'dreamcast';
-export interface CharacterProfile { name: string; gender: 'woman' | 'man' | 'non-binary' | 'unspecified'; personality: string; }
+export interface CharacterProfile { name: string; gender: 'woman' | 'man' | 'non-binary' | 'unspecified'; personality: string; spoken_language: string; accent: string; }
 export interface BriefStory { briefStory: string; suggestedTitle: string; suggestedGenre: string; characters: CharacterProfile[]; }
 export interface StoryScript { story_id: string; title: string; genre: string; language: string; global_settings: { master_volume: number; default_voice: string; background_music_volume: number; sfx_volume: number; speech_volume: number; output_format: 'mp3'; sample_rate: number }; scenes: Scene[]; }
 export interface Scene { scene_id: string; title: string; description: string; ambience: Array<{ sound: string; volume: number; loop: boolean; interval: number }>; background_music: { track: string; volume: number; fade_in_ms: number; fade_out_ms: number }; dialogue: Array<{ id: string; sentence: string; character: { name: string; voice: string }; metadata: { emotion: string; tone: string; pace: number; pitch: number; volume: number; pause_before_ms: number; pause_after_ms: number; emphasis: string; reverb: string }; background_sounds: Array<{ sound: string; start_offset_ms: number; duration_ms: number; volume: number }> }> }
-export interface AudioRender { audio_url: string; duration_seconds: number; scene_markers: Array<{ scene_id: string; start_seconds: number; end_seconds: number }>; status: 'completed' | 'failed'; error: string | null; }
+export interface AudioRender { audio_url: string; duration_seconds: number; scene_markers: Array<{ scene_id: string; start_seconds: number; end_seconds: number }>; status: 'completed' | 'failed'; error: string | null; coverImageUrl?: string; }
 export interface RenderedStory { audio: AudioRender; coverImageUrl: string; script: StoryScript; libraryId?: string; }
 export interface LibraryEntry { id: string; title: string; genre: string; coverImageUrl: string; createdAt: string; rendered: RenderedStory; }

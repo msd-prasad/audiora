@@ -21,6 +21,13 @@ API_ROOT = "https://api.elevenlabs.io/v1"
 DEFAULT_VOICES = {"Zephyros": "JBFqnCBsd6RMkjVDRZzb", "Elara": "21m00Tcm4TlvDq8ikWAM"}
 CAST_POOL = ["JBFqnCBsd6RMkjVDRZzb", "21m00Tcm4TlvDq8ikWAM", "pNInz6obpgDQGcFmaJgB", "EXAVITQu4vr4xnSDxMaL"]
 VOLUME = {"soft": .75, "medium-low": .88, "medium": 1.0, "normal": 1.0, "loud": 1.15}
+LOCALE_ALIASES = {
+    "british": "en-gb", "british english": "en-gb", "english british": "en-gb",
+    "american": "en-us", "american english": "en-us", "english american": "en-us",
+    "spanish": "es", "spanish spain": "es-es", "castilian": "es-es", "mexican spanish": "es-mx",
+    "french": "fr", "german": "de", "italian": "it", "portuguese": "pt",
+    "brazilian portuguese": "pt-br", "japanese": "ja", "korean": "ko", "hindi": "hi",
+}
 
 
 def shell(args: list[str]) -> None:
@@ -46,15 +53,47 @@ def voice_map(path: Path | None) -> dict[str, str]:
     return json.loads(path.read_text()) if path else DEFAULT_VOICES.copy()
 
 
+def locale_voice_map() -> dict[str, str]:
+    """Optional JSON map: {"en-gb": "eleven_voice_id", "es": "eleven_voice_id"}."""
+    raw = os.getenv("ELEVENLABS_LOCALE_VOICE_MAP", "").strip()
+    if not raw:
+        return {}
+    try:
+        data = json.loads(raw)
+    except json.JSONDecodeError as exc:
+        raise ValueError("ELEVENLABS_LOCALE_VOICE_MAP must be valid JSON.") from exc
+    if not isinstance(data, dict) or not all(isinstance(key, str) and isinstance(value, str) for key, value in data.items()):
+        raise ValueError("ELEVENLABS_LOCALE_VOICE_MAP must map locale strings to ElevenLabs voice IDs.")
+    return {key.strip().lower(): value.strip() for key, value in data.items() if value.strip()}
+
+
+def locale_key(background: dict) -> str | None:
+    language = str(background.get("spoken_language", "")).strip().lower()
+    accent = str(background.get("accent", "")).strip().lower()
+    for candidate in (accent, f"{language} {accent}".strip(), language):
+        if candidate in LOCALE_ALIASES:
+            return LOCALE_ALIASES[candidate]
+    return None
+
+
 def assign_default_cast(story: dict, voices: dict[str, str]) -> dict[str, str]:
-    """Give the narrator a stable voice and up to four named characters distinct defaults."""
+    """Prefer explicit character and locale voice IDs, then use the stable default cast."""
     cast = dict(voices)
     cast.setdefault("Narrator", CAST_POOL[0])
+    backgrounds = {item.get("name"): item for item in story.get("character_backgrounds", []) if item.get("name")}
+    locale_voices = locale_voice_map()
     for scene in story["scenes"]:
         for dialogue in scene.get("dialogue", scene.get("dialogues", [])):
             name = dialogue["character"]["name"]
             if name not in cast:
-                cast[name] = CAST_POOL[len(cast) % len(CAST_POOL)]
+                locale = locale_key(backgrounds.get(name, {}))
+                language = str(backgrounds.get(name, {}).get("spoken_language", "")).lower()
+                cast[name] = (
+                    locale_voices.get(locale or "")
+                    or locale_voices.get((locale or "").split("-", 1)[0])
+                    or locale_voices.get(language)
+                    or CAST_POOL[len(cast) % len(CAST_POOL)]
+                )
     return cast
 
 
